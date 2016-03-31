@@ -1,0 +1,56 @@
+﻿@model MyMortgageCalculator.Models.Mortgage
+@{
+    ViewBag.Title = "Mortgage Calculator";
+}
+
+<form data-bind="submit: submit" id="entry_form">
+
+    <label for="principal">Principal (GBP):</label>
+    <input type="text" data-bind="value: principal" id="principal" /><br />
+    <label for="annualPercentInterest">Annual Interest Rate:</label>
+    <input type="text" data-bind="value: annualPercentInterest" id="annualPercentInterest" /><br />
+    <label for="term">Term:</label>
+    <input type="text" data-bind="value: term" id="term" />
+    <select data-bind="value: termUnits" id="termUnits">
+        <option value="0">Months</option>
+        <option value="1">Years</option>
+    </select><br />
+    <button type="submit">Calculate</button><br />
+</form>
+<div data-bind="visible: amortizationViewModel.isNotEmpty">
+    <label for="monthlyPayment">Estimated monthly payment:</label>
+    <strong><span data-bind="text: ('£' + monthlyPayment())" id="monthlyPayment" class="result"></span></strong>
+   
+</div>
+ 
+<table data-bind="with: amortizationViewModel">
+    <thead data-bind="visible: isNotEmpty" style="display: none">
+        <tr>
+            <th>Index</th>
+            <th>Amount</th>
+            <th>Principal</th>
+            <th>Total Principal Paid</th>
+            <th>Interest</th>
+            <th>Total Interest Paid</th>
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: payments">
+        <tr>
+            @*<td data-bind="text:Index"></td>*@
+            <td data-bind="text: ($index()+1)"></td>
+            <td data-bind="text:PaymentAmount.toFixed(2)"></td>
+            <td data-bind="text:Principal.toFixed(2)"></td>
+            <td data-bind="text:TotalPrincipal.toFixed(2)"></td>
+            <td data-bind="text:Interest.toFixed(2)"></td>
+            <td data-bind="text:TotalInterest.toFixed(2)"></td>
+            <td data-bind="text:Balance.toFixed(2)"></td>
+        </tr>
+    </tbody>
+</table>
+@section Scripts
+{
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.0.0/knockout-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>
+    <script src="/Scripts/vm.mortgage.min.js"></script>
+}
